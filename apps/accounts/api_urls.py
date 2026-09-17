@@ -9,4 +9,5 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('photographers/', api_views.photographers_list, name='api_photographers'),
     path('photographers/<str:username>/', api_views.photographer_detail, name='api_photographer_detail'),
+    path('admin/stats/', api_views.admin_stats, name='api_admin_stats'),
 ]

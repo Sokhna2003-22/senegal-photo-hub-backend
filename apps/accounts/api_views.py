@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .models import User
 from .serializers import UserSerializer, RegisterSerializer
+from rest_framework.permissions import IsAdminUser
 
 
 class RegisterAPIView(generics.CreateAPIView):
@@ -81,3 +82,41 @@ class RegisterAPIView(generics.CreateAPIView):
             'access': str(refresh.access_token),
             'refresh': str(refresh),
         }, status=status.HTTP_201_CREATED)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def admin_stats(request):
+    if not request.user.is_staff:
+        return Response({'error': 'Non autorisé'}, status=403)
+
+    from apps.gallery.models import ClientGallery
+    from apps.portfolio.models import PortfolioAlbum
+    from apps.orders.models import Order
+    from apps.messaging.models import Message
+
+    stats = {
+        'total_users': User.objects.count(),
+        'total_photographers': User.objects.filter(role='photographer').count(),
+        'total_clients': User.objects.filter(role='client').count(),
+        'total_galleries': ClientGallery.objects.count(),
+        'total_albums': PortfolioAlbum.objects.count(),
+        'total_orders': Order.objects.count(),
+        'total_messages': Message.objects.count(),
+        'recent_users': UserSerializer(
+            User.objects.order_by('-date_joined')[:5],
+            many=True,
+            context={'request': request}
+        ).data,
+        'recent_orders': [],
+    }
+
+    from apps.orders.models import Order
+    from apps.orders.serializers import OrderSerializer
+    recent_orders = Order.objects.order_by('-created_at')[:5]
+    stats['recent_orders'] = OrderSerializer(
+        recent_orders,
+        many=True,
+        context={'request': request}
+    ).data
+
+    return Response(stats)

@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name', 'last_name',
-                  'email', 'role', 'avatar_url', 'photographer_profile']
+                  'email', 'role', 'avatar_url', 'photographer_profile', 'is_staff', 'is_superuser']
 
     def get_avatar_url(self, obj):
         request = self.context.get('request')
