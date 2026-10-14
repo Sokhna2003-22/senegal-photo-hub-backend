@@ -138,9 +138,3 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://senegal-photo-hub-432f1b58.vercel.app",
-    "https://euphonious-salamander-290a4d.netlify.app",
-    "https://*.ngrok-free.dev",
-    "https://*.ngrok-free.app",
-]
