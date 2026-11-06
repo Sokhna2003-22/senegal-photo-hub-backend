@@ -25,7 +25,7 @@ class Command(BaseCommand):
             from apps.accounts.models import PhotographerProfile
             PhotographerProfile.objects.update_or_create(id=1, defaults=dict(bio='', city='', instagram='', is_verified=False, plan='free', user_id=3, website=''))
             from apps.orders.models import Order
-            Order.objects.update_or_create(id=1, defaults=dict(client_id=1, event_date='2026-11-08T00:00:00Z', location='kms', message="J'ai un evenment", photographer_id=3, price=None, service_type='evenement', status='confirmed'))
+            Order.objects.update_or_create(id=1, defaults=dict(client_id=1, event_date='2026-11-08', location='kms', message="J'ai un evenment", photographer_id=3, price=None, service_type='evenement', status='confirmed'))
             from apps.messaging.models import Message
             Message.objects.update_or_create(id=1, defaults=dict(content='bonsoir', is_read=False, receiver_id=3, sender_id=1))
         self.stdout.write(self.style.SUCCESS('Migration complete!'))
